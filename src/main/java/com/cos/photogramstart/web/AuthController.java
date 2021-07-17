@@ -1,11 +1,16 @@
 package com.cos.photogramstart.web;
 
+import com.cos.photogramstart.web.dto.auth.SignupRequestDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller //Ioc , 파일을 리턴
 public class AuthController {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @GetMapping("/auth/signin")
     public String signinForm() {
@@ -23,7 +28,10 @@ public class AuthController {
     // 하지만 활성화시켜놓으면 자바스크립트에서도 구성하기 힘들어짐
     // 비활성화 시켜놓자.
     @PostMapping("/auth/signup")
-    public String signup() {
+    public String signup(SignupRequestDto signupRequestDto) { // key=value (x-www-form-urlencoded)
+
+        log.info(String.valueOf(signupRequestDto));
+
         return "/auth/signin";
     }
 }
