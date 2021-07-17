@@ -1,5 +1,6 @@
 package com.cos.photogramstart.web.dto.auth;
 
+import com.cos.photogramstart.domain.user.User;
 import lombok.Data;
 
 // 데이터를 전송하는데 필요한 데이터를 담는데 사용한다.
@@ -11,5 +12,14 @@ public class SignupRequestDto {
     private String password;
     private String email;
     private String name;
+
+    public User toEntity() {
+        return User.builder()
+                .username(username)
+                .password(password)
+                .email(email)
+                .name(name)
+                .build();
+    }
 
 }
