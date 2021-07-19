@@ -93,3 +93,7 @@ file:
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 ```
+
+## 5. 전처리 후처리 개념
+
+회원가입 등의 로직을 핵심로직이라고 하며 핵심로직을 앞, 뒤에서 처리하는 로직을 공통로직이라고 한다.
