@@ -1,6 +1,7 @@
 package com.cos.photogramstart.web;
 
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.handler.ex.CustomValidationException;
 import com.cos.photogramstart.service.AuthService;
 import com.cos.photogramstart.web.dto.auth.SignupRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +43,7 @@ public class AuthController {
     // 하지만 활성화시켜놓으면 자바스크립트에서도 구성하기 힘들어짐
     // 비활성화 시켜놓자.
     @PostMapping("/auth/signup")
-    public @ResponseBody
-    String signup(@Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) { // key=value (x-www-form-urlencoded)
+    public String signup(@Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) { // key=value (x-www-form-urlencoded)
 
         // Valid에서 생긴 에러들을 BindingResult에 다 모아준다.
         // bindingResult에 에러가 담겨 있다면 for 문을 돌린다.
@@ -57,7 +57,10 @@ public class AuthController {
                 System.out.println(error.getDefaultMessage());
                 System.out.println("=====================");
             }
-            return "오류남";
+            // 오류가 나면 Exception을 발동시킨다.
+            throw new CustomValidationException("유효성 검사 실패함", errorMap);
+            // 익셉션 난 것을 핸들러를 통해 컨트롤한다.
+            // hashMap 에 담은 메시지를 넘겨주자.
         } else {
             log.info(String.valueOf(signupRequestDto));
 
