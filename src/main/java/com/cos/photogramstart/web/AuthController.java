@@ -8,8 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller //Ioc , 파일을 리턴
@@ -35,7 +41,21 @@ public class AuthController {
     // 하지만 활성화시켜놓으면 자바스크립트에서도 구성하기 힘들어짐
     // 비활성화 시켜놓자.
     @PostMapping("/auth/signup")
-    public String signup(SignupRequestDto signupRequestDto) { // key=value (x-www-form-urlencoded)
+    public String signup(@Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) { // key=value (x-www-form-urlencoded)
+
+        // Valid에서 생긴 에러들을 BindingResult에 다 모아준다.
+        // bindingResult에 에러가 담겨 있다면 for 문을 돌린다.
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+                System.out.println("=====================");
+                System.out.println(error.getDefaultMessage());
+                System.out.println("=====================");
+            }
+        }
 
         log.info(String.valueOf(signupRequestDto));
 
