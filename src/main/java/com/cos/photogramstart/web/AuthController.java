@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -41,7 +42,8 @@ public class AuthController {
     // 하지만 활성화시켜놓으면 자바스크립트에서도 구성하기 힘들어짐
     // 비활성화 시켜놓자.
     @PostMapping("/auth/signup")
-    public String signup(@Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) { // key=value (x-www-form-urlencoded)
+    public @ResponseBody
+    String signup(@Valid SignupRequestDto signupRequestDto, BindingResult bindingResult) { // key=value (x-www-form-urlencoded)
 
         // Valid에서 생긴 에러들을 BindingResult에 다 모아준다.
         // bindingResult에 에러가 담겨 있다면 for 문을 돌린다.
@@ -55,17 +57,18 @@ public class AuthController {
                 System.out.println(error.getDefaultMessage());
                 System.out.println("=====================");
             }
+            return "오류남";
+        } else {
+            log.info(String.valueOf(signupRequestDto));
+
+            // User <- SignupRequestDto
+            User user = signupRequestDto.toEntity();
+            log.info(user.toString());
+
+            User userEntity = authService.회원가입(user);
+            System.out.println("userEntity = " + userEntity);
+
+            return "/auth/signin";
         }
-
-        log.info(String.valueOf(signupRequestDto));
-
-        // User <- SignupRequestDto
-        User user = signupRequestDto.toEntity();
-        log.info(user.toString());
-
-        User userEntity = authService.회원가입(user);
-        System.out.println("userEntity = " + userEntity);
-
-        return "/auth/signin";
     }
 }
