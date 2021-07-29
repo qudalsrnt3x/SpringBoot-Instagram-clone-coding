@@ -17,8 +17,8 @@ public class UserUpdateDto {
     // 위험함, 코드수정이 필요할 예정
     public User toEntity() {
         return User.builder()
-                .name(name)
-                .password(password)
+                .name(name) // 얘도 기재 안하면 문제
+                .password(password) // 사용자가 패스워드 기재 안했으면 공백으로 들어온다..문제!! Validation 체크
                 .website(website)
                 .bio(bio)
                 .phone(phone)
