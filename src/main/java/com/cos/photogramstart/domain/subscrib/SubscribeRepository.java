@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface SubscribeRepository extends JpaRepository<Subscribe, Integer> {
 
     @Modifying // INSERT, DELETE, UPDATE
-    @Query(value = "INSERT INTO subscribe(fromUserId, toUserId, createDate) VALUES(:fromUserId, :toUserId, :now())", nativeQuery = true)
+    @Query(value = "INSERT INTO subscribe(fromUserId, toUserId, createDate) VALUES(:fromUserId, :toUserId, now())", nativeQuery = true)
     void mSubscribe(int fromUserId, int toUserId); // 성공하면 1(변경된 행의 갯수가 리턴됨), 실패하면 -1
 
     @Modifying
