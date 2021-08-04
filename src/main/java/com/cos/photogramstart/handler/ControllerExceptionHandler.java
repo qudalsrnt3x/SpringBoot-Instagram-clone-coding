@@ -23,7 +23,11 @@ public class ControllerExceptionHandler {
         // 2. Ajax 통신 - CMRespDto - 개발자
         // 3. Android 통신 - CMRespDto - 개발자가 응답
 
-        return Script.back(e.getErrorMap().toString());
+        if (e.getErrorMap() == null) {
+            return Script.back(e.getMessage());
+        } else {
+            return Script.back(e.getErrorMap().toString());
+        }
     }
 
     @ExceptionHandler(CustomValidationApiException.class) // RuntimeExcpetion이 발동하는 모든 Exception을 낚아챈다.
