@@ -7,6 +7,7 @@ import com.cos.photogramstart.web.dto.image.ImageUploadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +23,7 @@ public class ImageService {
     @Value("${file.path}") // application.yml 의 file.path 를 가져옴
     private String uploadFolder;
 
+    @Transactional
     public void 사진업로드(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
         UUID uuid = UUID.randomUUID(); // uuid
 
@@ -41,9 +43,11 @@ public class ImageService {
 
         // image 테이블에 저장
         Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser()); // 377067bd-978b-4ca3-bf21-2936875c461f_스크린샷 2021-07-08 19.39.00.png
-        Image imageEntity = imageRepository.save(image);
+        imageRepository.save(image);
 
-        System.out.println("imageEntity = " + imageEntity);
+        //System.out.println("imageEntity = " + imageEntity.toString()); // 출력 시 오류가 난다.
+        // 양방향 매핑으로 인해서 계속 호출이된다.
+        // 무한 참조가 일어나기 때문에 sout 는 조심해야함
 
     }
 }
