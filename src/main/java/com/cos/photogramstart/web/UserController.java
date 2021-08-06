@@ -31,12 +31,12 @@ public class UserController {
     @GetMapping("/user/{id}/update")
     public String update(@PathVariable int id, @AuthenticationPrincipal PrincipalDetails principalDetails) { // 세션에 접근가능
         //1. 어노테이션으로 세션에 바로접근 (추천)
-        System.out.println("세션 정보: " + principalDetails.getUser());
+        //System.out.println("세션 정보: " + principalDetails.getUser());
 
         //2. 직접 세션에 접근하는 방법
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         PrincipalDetails mPrincipalDetails = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println("직접 찾은 세션 정보 : " + mPrincipalDetails.getUser());
+        //System.out.println("직접 찾은 세션 정보 : " + mPrincipalDetails.getUser());
 
         //model.addAttribute("principal", principalDetails.getUser());
         // model에 안넘겨도 된다.
